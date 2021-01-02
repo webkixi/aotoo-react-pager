@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webkixi/aotoo.git"
+    "url": "git+https://github.com/webkixi/aotoo-react-pager.git"
   },
   "main": "dest/index.js",
   "dependencies": {
@@ -54,5 +54,8 @@
   ],
   "author": "天天修改",
   "license": "MIT",
-  "homepage": "http://www.agzgz.com"
+  "homepage": "http://www.agzgz.com",
+  "bugs": {
+    "url": "https://github.com/webkixi/aotoo-react-pager/issues"
+  }
 }
