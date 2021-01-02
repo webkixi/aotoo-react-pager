@@ -1,0 +1,58 @@
+{
+  "name": "@aotoo/react-pager",
+  "version": "1.0.0",
+  "description": "base on react/aotoo, it's router component",
+  "scripts": {
+    "build": "babel src -d dest",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webkixi/aotoo.git"
+  },
+  "main": "dest/index.js",
+  "dependencies": {
+    "@aotoo/aotoo": "^6.1.35"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.5",
+    "@babel/plugin-proposal-export-default-from": "^7.10.4",
+    "@babel/plugin-proposal-export-namespace-from": "^7.10.4",
+    "@babel/plugin-proposal-function-bind": "^7.10.5",
+    "@babel/plugin-proposal-function-sent": "^7.10.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-computed-properties": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/polyfill": "^7.10.4",
+    "@babel/preset-env": "^7.9.5",
+    "core-js": "^3.6.5",
+    "@babel/preset-react": "^7.10.4",
+    "del": "^5.1.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-uglify": "^3.0.2"
+  },
+  "keywords": [
+    "aotoo",
+    "react",
+    "frontend",
+    "componet",
+    "components",
+    "router",
+    "react-component",
+    "ui"
+  ],
+  "browserslist": [
+    "last 2 versions",
+    "Firefox ESR",
+    "> 1%",
+    "ie >= 11",
+    "maintained node versions"
+  ],
+  "author": "天天修改",
+  "license": "MIT",
+  "homepage": "http://www.agzgz.com"
+}
