@@ -1,10 +1,16 @@
-# @aotoo/pager路由
+# @aotoo/react-pager
+
+基于react的一款前端路由(仿小程序)，支持node端渲染，在`aotoo-hub`中可以查看该路由使用方法，[**戳这里**](http://www.agzgz.com)
 
 ## Pager方法
 
-我们使用`Pager`来构建SPA页面，仿小程序页面生命周期
+我们使用`Pager`来构建单页面，仿小程序页面生命周期
 
 ```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Pager from '@aotoo/react-pager'
+
 function template(state, props) {
   return <div>{state.file}</div>
 }
@@ -46,7 +52,7 @@ ReactDOM.render(<page.UI />, document.getElementById('root'))
 
 ## Pager.pages
 
-该方法用于定义路由表，默认会自动渲染结构到 `#root` 容器
+该方法用于定义路由表，构建SPA项目。支持node端渲染。默认会自动渲染结构到 `#root` 容器
 
 ### 语法
 
@@ -80,6 +86,10 @@ Pager.pages([
 {String}  
 默认为`#`，置为空则转为内存路由
 
+`options.maxAge`  
+{String}  
+路由历史记录的缓存事件，使用saveHistory方法时调用  
+
 `options.header`  
 {[JSX|Function]}  
 配置路由页面的头部，支持JSX，或者item组件配置  
@@ -110,37 +120,22 @@ Pager.pages([
 
 ### 定义SPA路由表示例
 
+**路由表**
+
 ```js
+// index.js
+
+import Pager from '@aotoo/react-pager'
 const nav = Pager.nav
 
-Pager.pages([
+// 构建SPA路由，并自动渲染至#root容器(默认)
+export default Pager.pages([
   {url: '/index/a', content: import('./_subpages/a')},
   {url: '/index/b', content: import('./_subpages/b')},
   {url: '/index/c', content: require('./_subpages/c')},
 ], {
-  header: ()=> <div className="nav-header">...</div>,
-  footer: <div className="nav-footer">...</div>
-  menus: function(){
-    return <Menus />
-  },
   select: '/index/a',
 })
-
-// 菜单栏
-function Menus(props){
-  let methodClick = function(e){
-    let target = e.target; let dataset = target.dataset;
-    let url = dataset.url
-    nav.redirectTo({url})  // 参考路由方法
-  }
-  return (
-    <>
-      <div className="menu-item" data-url='/index/a' onClick={methodClick}>菜单1</div>
-      <div className="menu-item" data-url='/index/b' onClick={methodClick}>菜单2</div>
-      <div className="menu-item" data-url='/index/c' onClick={methodClick}>菜单3</div>
-    </>
-  )
-}
 ```
 
 **子页面**  
@@ -182,6 +177,13 @@ export default function(Pager) {
 }
 ```
 
+**server**
+
+```js
+import index from '../index'
+const htmlStr = await index
+```
+
 ## Pager.nav
 
 `Pager.nav`是一个对象，包含下面路由方法，路由方法的设计参考自小程序
@@ -204,17 +206,24 @@ nav.relaunch(...)
 
 关闭所有页面，打开到应用内的某个页面  
 
-参数
-Object object  
+使用
+
+```js
+nav.reLaunch({
+  url: '',
+  success: function(){}
+  ...
+})
+```
 
 | 属性 | 类型 |  默认值 |  必填 |  说明 |
 | :----: | :----: |  :----: |  :----:  |  :----  |
 | url | string |  |  是  | 跳转的应用内页面路径  |
 | beforeNav | function |  |  否  | 跳转前动作  |
-| success | function |  | 否 | 未实现，暂无使用场景 |
-| fail | function | | 否 | 未实现，暂无使用场景 |
-| complete | function |  | 否 | 未实现，暂无使用场景 |
-| events | object |  | 否 | 未实现，暂无使用场景 |
+| success | function |  | 否 | 跳转成功执行 |
+| fail | function | | 否 | 跳转失败执行 |
+| complete | function |  | 否 | 跳转执行(成功&失败) |
+| events | object |  | 否 | 未实现 |
 
 #### url
 
@@ -233,8 +242,7 @@ Object object
 
 `next`  
 {Function}  
-`next(param)`: param将被合并到to的参数中，允许修改将要跳转页面页面参数
-允许跳转  
+`next(param)`: 执行该方法允许路由跳转，param将被合并到to的参数中，允许修改将要跳转页面页面参数  
 
 ```js
 onClick(e, param, inst){
@@ -272,3 +280,30 @@ onClick(e, param, inst){
 关闭当前页面，返回上一页面  
 
 配置参考 reLaunch
+
+## 路由实例
+
+Pager是路由的封装方法，支持嵌套路由，每一次路由初始化将会产生一个新的路由实例，使用nav对象做路由跳转时，nav对象会自动匹配路有实例并实现路由跳转。
+
+但有一些特殊点的实例方法需要手动操作  
+
+### 获取路由实例
+
+```js
+let router = Pager.getRouter()  // 获取当前操作的路由实例  
+let rootRouter = Pager.getRootRouter() // 获取祖先路由实例  
+```
+
+### 路由实例方法  
+
+**router.getCurrentPages**  
+获取当前路由的参数信息  
+
+**router.saveHistory**  
+保存路由的历史数据到localstorage，通常这个操作只针对rootRouter
+
+**router.clearHistory**  
+清空路由的历史记录，当我们使用`reLaunch`路由方法时会自动调用，通常这个操作只针对rootRouter
+
+**router.restoreHistory**  
+由localstorage恢复路由的历史记录，通常这个操作只针对rootRouter
