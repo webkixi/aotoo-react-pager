@@ -2,6 +2,14 @@
 
 基于react的一款前端路由(仿小程序)，支持node端渲染，在`aotoo-hub`中可以查看该路由使用方法，[**戳这里**](http://www.agzgz.com)
 
+## 安装  
+
+```bash
+npm install @aotoo/react-pager
+# 或者
+yarn add @aotoo/react-pager
+```
+
 ## Pager方法
 
 我们使用`Pager`来构建单页面，仿小程序页面生命周期
